@@ -3,12 +3,16 @@
 require_once __DIR__. '/AbstractModel.class.php';
 
 class Carro extends AbstractModel{
-    
-    protected $table    = 'Carro';
-    protected $schema   = 'Auth';
-    protected $namePk   = 'codigo';
 
-    protected $ignore   = Array();
+    protected $table        = 'Carro';
+    protected $schema       = 'Auth';
+    protected $namePk       = 'codigo';
+
+    protected $ignore       = Array();
+
+    protected static $config       = Array(
+        "createTable" => true
+    );
     
     protected $codigo;
     protected $nome;

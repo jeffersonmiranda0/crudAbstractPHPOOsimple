@@ -12,11 +12,14 @@ class AbstractModel extends ConnectionService{
     protected $workmodel;
     private $lastId = '';
     private $query  = '';
+    private $ignoreAttr = array('workmodel', 'table', 'schema', 'ignore', 'namePk', 'query', 'lastId', 'config', 'ignoreAttr');
     
     public function __construct() {
         parent::__construct();
         
         $this->workmodel = $this;
+
+        $this->createTable();
     }
     
     
@@ -45,6 +48,15 @@ class AbstractModel extends ConnectionService{
     {
         return $this->request()->query($query, PDO::FETCH_ASSOC)->fetch(PDO::FETCH_OBJ);
     }
+
+
+    private function createTable()
+    {
+        if($this->workmodel->config['createTable'] == true){
+            //IN PROGRESS
+        }
+    }
+
     
     /**
      * RESPONSAVEL POR POPULAR OS ATRIBUTOS DA CLASSE
@@ -52,8 +64,9 @@ class AbstractModel extends ConnectionService{
      */
     public function populateAttr()
     {
-        $itensIgnore = array($this->workmodel->namePk, 'workmodel', 'table', 'schema', 'ignore', 'namePk', 'query', 'lastId');
-        $namePk = $this->workmodel->namePk;
+        $this->ignoreAttr[] = $this->workmodel->namePk;
+        $itensIgnore    = $this->ignoreAttr;
+        $namePk         = $this->workmodel->namePk;
         
         $header = Array();
         
@@ -94,7 +107,8 @@ class AbstractModel extends ConnectionService{
      */
     public function insert($saveEmpty = false)
     {
-        $itensIgnore = array($this->workmodel->namePk, 'workmodel', 'table', 'schema', 'ignore', 'namePk', 'query', 'lastId');
+        $this->ignoreAttr[] = $this->workmodel->namePk;
+        $itensIgnore    = $this->ignoreAttr;
 
         $name   = Array();
         $values  = Array();
@@ -131,7 +145,8 @@ class AbstractModel extends ConnectionService{
      */
     public function update($saveEmpty = false)
     {
-        $itensIgnore = array($this->workmodel->namePk, 'workmodel', 'table', 'schema', 'ignore', 'namePk', 'query', 'lastId');
+        $this->ignoreAttr[] = $this->workmodel->namePk;
+        $itensIgnore        = $this->ignoreAttr;
 
         $name   = Array();
         $values = Array();
