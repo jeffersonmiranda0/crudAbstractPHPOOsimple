@@ -2,6 +2,13 @@
 
 require_once __DIR__. '/AbstractModel.class.php';
 
+
+/**
+ * @classConfig {"schema":"Auth"}
+ * @classConfig {"table":"Carro"}
+ * @classConfig {"namePk":"codigo"}
+ * @classConfig {"ignore":""}
+ */
 class Carro extends AbstractModel{
 
     protected $table        = 'Carro';
@@ -10,28 +17,40 @@ class Carro extends AbstractModel{
 
     protected $ignore       = Array();
 
-    protected $config       = Array(
-        "createTable" => true
-    );
-
     /**
-     * @var int $codigo
+     * @classConfig {"name":"codigo"}
+     * @classConfig {"type":"int"}
+     * @classConfig {"default":"null"}
+     * @classConfig {"autoIncrement":"true"}
+     * @classConfig {"primaryKey":"true"}
      */
     protected $codigo;
+
     /**
-     * @var string $nome;
+     * @classConfig {"name":"nome"}
+     * @classConfig {"type":"varchar(50)"}
+     * @classConfig {"default":"null"}
      */
     protected $nome;
+
     /**
-     * @var string $marca
+     * @classConfig {"name":"marca"}
+     * @classConfig {"type":"varchar(50)"}
+     * @classConfig {"default":"null"}
      */
     protected $marca;
+
     /**
-     * @var string $modelo
+     * @classConfig {"name":"modelo"}
+     * @classConfig {"type":"varchar(50)"}
+     * @classConfig {"default":"null"}
      */
     protected $modelo;
+
     /**
-     * @var int $ano
+     * @classConfig {"name":"ano"}
+     * @classConfig {"type":"smallint(4)"}
+     * @classConfig {"default":"null"}
      */
     protected $ano;
 

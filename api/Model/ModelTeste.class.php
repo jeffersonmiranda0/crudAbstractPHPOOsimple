@@ -6,23 +6,23 @@
  * @author jefferson
  */
 require_once __DIR__ . '/AbstractModel.class.php';
-class ModelTeste extends AbstractModel{
-    
+abstract class ModelTeste extends AbstractModel{
+
     protected $table      = 'pessoa';
     protected $schema     = 'auth';
     protected $namePk     = 'codigo';
     protected $ignore     = Array();
-        
+
     protected $codigo;
     protected $nome;
     protected $sobrenome;
     protected $ativo;
-    
+
     function getCodigo() {
         return $this->codigo;
     }
 
-    function getNome() {        
+    function getNome() {
         return $this->nome;
     }
 
@@ -48,11 +48,11 @@ class ModelTeste extends AbstractModel{
 
     function setAtivo($ativo) {
         $this->ativo = (int)$ativo;
-    }  
-    
+    }
+
     public function __construct() {
         parent::__construct($this);
-        
+
     }
     
 }

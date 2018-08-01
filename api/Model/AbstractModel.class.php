@@ -52,9 +52,6 @@ class AbstractModel extends ConnectionService{
 
     private function createTable()
     {
-        if($this->workmodel->config['createTable'] == true){
-            //IN PROGRESS
-        }
     }
 
     
@@ -64,7 +61,8 @@ class AbstractModel extends ConnectionService{
      */
     public function populateAttr()
     {
-        $this->ignoreAttr[] = $this->workmodel->namePk;
+        $itensIgnore    = $this->ignoreAttr;
+        $itensIgnore[]  = $this->workmodel->namePk;
         $itensIgnore    = $this->ignoreAttr;
         $namePk         = $this->workmodel->namePk;
         
@@ -107,7 +105,8 @@ class AbstractModel extends ConnectionService{
      */
     public function insert($saveEmpty = false)
     {
-        $this->ignoreAttr[] = $this->workmodel->namePk;
+        $itensIgnore    = $this->ignoreAttr;
+        $itensIgnore[]  = $this->workmodel->namePk;
         $itensIgnore    = $this->ignoreAttr;
 
         $name   = Array();
@@ -145,8 +144,9 @@ class AbstractModel extends ConnectionService{
      */
     public function update($saveEmpty = false)
     {
-        $this->ignoreAttr[] = $this->workmodel->namePk;
-        $itensIgnore        = $this->ignoreAttr;
+        $itensIgnore    = $this->ignoreAttr;
+        $itensIgnore[]  = $this->workmodel->namePk;
+        $itensIgnore    = $this->ignoreAttr;
 
         $name   = Array();
         $values = Array();
@@ -260,5 +260,39 @@ class AbstractModel extends ConnectionService{
 //            $this->table = $value->Table;
 //        }
 //    }
-    
+
+
+
+    public function getProperty()
+    {
+        $class = get_class($this->workmodel);
+        $matchesnew = Array();
+        $property = get_class_vars($class);
+        foreach ($property as $nameprop => $prop){
+
+            if(in_array($nameprop, $this->ignoreAttr)) continue;
+            echo '<pre>';
+//            var_dump($nameprop);
+
+            $rc = new ReflectionProperty($class, $nameprop);
+//            var_dump($rc->getDocComment());
+            preg_match_all("/@ConfigTable (.*?)\n/", $rc->getDocComment(), $matches);
+            $matchesnew[] = array_map('trim', $matches[1]);
+
+        }
+
+
+        $rf = new ReflectionClass($class);
+        preg_match_all("/@ConfigTable (.*?)\n/", $rf->getDocComment(), $matches2);
+        $matches2 = array_map('trim', $matches2[1]);
+
+
+
+        return [
+            "cabecalho" => $matches2,
+            "attr"      => $matchesnew
+        ];
+
+    }
+
 }

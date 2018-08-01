@@ -20,7 +20,6 @@ $retorno = $carro->populateAttr(); //METODO UTILIZADO PARA CARREGAR NA MEMÓRIA 
 
 
 $rc = new ReflectionClass(new Carro());
-
 $tokens = token_get_all(file_get_contents($rc->getFileName()));
 
 $count = 0;
@@ -42,5 +41,26 @@ foreach($tokens as $token) {
     $count++;
 }
 
-echo "<pre>";
-var_dump($index);
+//echo "<pre>";
+//var_dump($index);
+//
+//
+//echo "</pre>";
+//
+//echo "<br />";
+
+//$rc = new ReflectionProperty($carro, 'index');
+//var_dump($rc->getDocComment());
+//
+//$class = new ReflectionClass($carro);
+//$property = $class->getProperty('codigo')->getDocComment();
+//
+//var_dump($property);
+
+
+var_dump($carro->getProperty());
+
+
+//var_dump($rc);
+
+
