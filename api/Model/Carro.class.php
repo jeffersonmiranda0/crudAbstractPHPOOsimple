@@ -4,10 +4,11 @@ require_once __DIR__. '/AbstractModel.class.php';
 
 
 /**
- * @classConfig {"schema":"Auth"}
- * @classConfig {"table":"Carro"}
- * @classConfig {"namePk":"codigo"}
- * @classConfig {"ignore":""}
+ * @queryConfig {"schema":"Auth"}
+ * @queryConfig {"table":"Carro3"}
+ * @queryConfig {"namePk":"codigo"}
+ * @classConfig {"ignore":"abc"}
+ * @classConfig {"generateTable":true}
  */
 class Carro extends AbstractModel{
 
@@ -18,39 +19,39 @@ class Carro extends AbstractModel{
     protected $ignore       = Array();
 
     /**
-     * @classConfig {"name":"codigo"}
-     * @classConfig {"type":"int"}
-     * @classConfig {"default":"null"}
-     * @classConfig {"autoIncrement":"true"}
-     * @classConfig {"primaryKey":"true"}
+     * @queryConfig {"name":"codigo"}
+     * @queryConfig {"type":"int"}
+     * @queryConfig {"notnull":true}
+     * @queryConfig {"autoIncrement":"true"}
+     * @queryConfig {"primaryKey":"true"}
      */
     protected $codigo;
 
     /**
-     * @classConfig {"name":"nome"}
-     * @classConfig {"type":"varchar(50)"}
-     * @classConfig {"default":"null"}
+     * @queryConfig {"name":"nome"}
+     * @queryConfig {"type":"varchar(50)"}
+     * @queryConfig {"default":"null"}
      */
     protected $nome;
 
     /**
-     * @classConfig {"name":"marca"}
-     * @classConfig {"type":"varchar(50)"}
-     * @classConfig {"default":"null"}
+     * @queryConfig {"name":"marca"}
+     * @queryConfig {"type":"varchar(50)"}
+     * @queryConfig {"default":"null"}
      */
     protected $marca;
 
     /**
-     * @classConfig {"name":"modelo"}
-     * @classConfig {"type":"varchar(50)"}
-     * @classConfig {"default":"null"}
+     * @queryConfig {"name":"modelo"}
+     * @queryConfig {"type":"varchar(50)"}
+     * @queryConfig {"default":"null"}
      */
     protected $modelo;
 
     /**
-     * @classConfig {"name":"ano"}
-     * @classConfig {"type":"smallint(4)"}
-     * @classConfig {"default":"null"}
+     * @queryConfig {"name":"ano"}
+     * @queryConfig {"type":"smallint(4)"}
+     * @queryConfig {"default":"null"}
      */
     protected $ano;
 

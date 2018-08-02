@@ -41,7 +41,7 @@ foreach($tokens as $token) {
     $count++;
 }
 
-//echo "<pre>";
+echo "<pre>";
 //var_dump($index);
 //
 //
@@ -58,7 +58,11 @@ foreach($tokens as $token) {
 //var_dump($property);
 
 
-var_dump($carro->getProperty());
+//var_dump($carro->getProperty());
+
+
+
+
 
 
 //var_dump($rc);

@@ -7,18 +7,22 @@
  */
 require_once __DIR__ . '/../Service/ConnectionService.class.php';
 require_once __DIR__ . '/../Service/ReturnService.class.php';
+require_once __DIR__ . '/../Service/ReadDoc.php';
 class AbstractModel extends ConnectionService{
     
-    protected $workmodel;
-    private $lastId = '';
-    private $query  = '';
-    private $ignoreAttr = array('workmodel', 'table', 'schema', 'ignore', 'namePk', 'query', 'lastId', 'config', 'ignoreAttr');
+    public $workmodel;
+    private $lastId         = '';
+    private $query          = '';
+    private $classConfig    = Array();
+    private $ignoreAttr     = array('workmodel', 'table', 'schema', 'ignore', 'namePk',
+        'query', 'lastId', 'config', 'ignoreAttr', 'classConfig'
+    );
     
     public function __construct() {
         parent::__construct();
         
-        $this->workmodel = $this;
-
+        $this->workmodel    = $this;
+        $this->classConfig  = (new ReadDoc())->read($this->workmodel);
         $this->createTable();
     }
     
@@ -52,6 +56,31 @@ class AbstractModel extends ConnectionService{
 
     private function createTable()
     {
+        if($this->classConfig['classConfig']['header']['generateTable'] == 0 || !isset($this->classConfig['classConfig']['header']['generateTable'])) return;
+        if(!isset($this->classConfig['queryConfig'])) return;
+
+
+        $table = $this->classConfig['queryConfig']['header']['table'];
+        $attrs = Array();
+
+        foreach ($this->classConfig['queryConfig'] as $name => $config){
+            if($name == 'header') continue;
+
+            $name           = $config['name'];
+            $type           = $config['type'];
+            $autoIncrement  = isset($config['autoIncrement']) ? " AUTO_INCREMENT " : "";
+            $primaryKey     = isset($config['primaryKey']) ? " PRIMARY KEY " : "";
+            $notnull        = (isset($config['notnull']) and $config['notnull'] == true) ? "NOT NULL" : "";
+            $default        = isset($config['default']) ? " DEFAULT {$config['default']} " : "";
+            $comment        = isset($config['comment']) ? " COMMENT({$config['comment']}) " : "";
+
+            $attrs[] = ("$name $type $notnull $autoIncrement $primaryKey $default $comment\n");
+        }
+
+
+        $query = "CREATE TABLE IF NOT EXISTS {$table} (". implode($attrs, ' , ') .")";
+        $this->request()->query($query);
+        $this->query = $query;
     }
 
     
@@ -233,65 +262,50 @@ class AbstractModel extends ConnectionService{
     }
 
 
-//    private function getConfigSchema()
-//    {
-//
-//        $tokens = token_get_all(file_get_contents("example.php"));
-//
-//        foreach($tokens as $token) {
-//            if($token[0] == T_COMMENT || $token[0] == T_DOC_COMMENT) {
-//                $aux = preg_replace('/[ ]/ui', '', $token[1]);
-//                $aux = preg_replace('/[\/*]/ui', '', $aux);
-//                $aux = preg_replace('/[@]/ui', '"', $aux);
-//                $aux = preg_replace('/[:]/ui', '":"', $aux);
-//                $aux = preg_replace('/[}]/ui', '"}', $aux);
-//
-//                $this->setTable($aux);
-//
-//            }
-//        }
-//    }
-//
-//
-//    private function setTable($value)
-//    {
-//        if(preg_match('/@Table/', $value)){
-//            $value = json_decode($value);
-//            $this->table = $value->Table;
-//        }
-//    }
 
 
 
     public function getProperty()
     {
-        $class = get_class($this->workmodel);
-        $matchesnew = Array();
-        $property = get_class_vars($class);
-        foreach ($property as $nameprop => $prop){
-
-            if(in_array($nameprop, $this->ignoreAttr)) continue;
-            echo '<pre>';
-//            var_dump($nameprop);
-
-            $rc = new ReflectionProperty($class, $nameprop);
-//            var_dump($rc->getDocComment());
-            preg_match_all("/@ConfigTable (.*?)\n/", $rc->getDocComment(), $matches);
-            $matchesnew[] = array_map('trim', $matches[1]);
-
-        }
-
-
-        $rf = new ReflectionClass($class);
-        preg_match_all("/@ConfigTable (.*?)\n/", $rf->getDocComment(), $matches2);
-        $matches2 = array_map('trim', $matches2[1]);
+//        $class = get_class($this->workmodel);
+//        $matchesnew = Array();
+//        $property = get_class_vars($class);
+//
+//
+//        require_once "api/Service/ReadDoc.php";
+//
+//
+//        $read = new ReadDoc($this);
+//
+//        return $read->read($this->workmodel);
 
 
 
-        return [
-            "cabecalho" => $matches2,
-            "attr"      => $matchesnew
-        ];
+
+//        foreach ($property as $nameprop => $prop){
+//
+//            if(in_array($nameprop, $this->ignoreAttr)) continue;
+//            echo '<pre>';
+////            var_dump($nameprop);
+//
+//            $rc = new ReflectionProperty($class, $nameprop);
+////            var_dump($rc->getDocComment());
+//            preg_match_all("/@ConfigTable (.*?)\n/", $rc->getDocComment(), $matches);
+//            $matchesnew[] = array_map('trim', $matches[1]);
+//
+//        }
+//
+//
+//        $rf = new ReflectionClass($class);
+//        preg_match_all("/@ConfigTable (.*?)\n/", $rf->getDocComment(), $matches2);
+//        $matches2 = array_map('trim', $matches2[1]);
+//
+//
+//
+//        return [
+//            "cabecalho" => $matches2,
+//            "attr"      => $matchesnew
+//        ];
 
     }
 
