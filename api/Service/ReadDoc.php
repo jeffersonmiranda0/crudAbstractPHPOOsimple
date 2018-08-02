@@ -8,8 +8,14 @@
 
 class ReadDoc
 {
-    private $supportAnnotation  = ['queryConfig', 'classConfig'];
+    private $supportAnnotation  = ['Schema','Table','NamePk','Ignore','var', 'Column','Type','Length','NotNull','Increment','PrimaryKey','Comment','Default','GenerateTable'];
     private $property           = Array();
+    private $json               = false;
+
+    public function __construct($json = false)
+    {
+        $this->json = $json;
+    }
 
     /**
      * @return array
@@ -65,7 +71,10 @@ class ReadDoc
     public function setProperty(Array $docComment, $annotation, $property)
     {
         if(count($docComment[1]) <= 0) return;
-        $this->property[$annotation][$property] = self::transformJsonInArray($docComment[1]);
+
+        $doc = $this->json == true ? self::transformJsonInArray($docComment[1]) : preg_replace('/[\("\)]/', '', trim($docComment[1][0]));
+
+        $this->property[$property][$annotation] = $doc;
     }
 
 
@@ -86,6 +95,7 @@ class ReadDoc
         $newArray   = Array();
 
         foreach ($values as $value){
+
             $aux = json_decode($value);
 
             if($aux == null) continue;

@@ -56,30 +56,31 @@ class AbstractModel extends ConnectionService{
 
     private function createTable()
     {
-        if($this->classConfig['classConfig']['header']['generateTable'] == 0 || !isset($this->classConfig['classConfig']['header']['generateTable'])) return;
-        if(!isset($this->classConfig['queryConfig'])) return;
-
-
-        $table = $this->classConfig['queryConfig']['header']['table'];
+        if(!isset($this->classConfig['header'])) return;
+        if(!isset($this->classConfig['header']['GenerateTable']) OR (int)$this->classConfig['header']['GenerateTable'] == true) return;
+        $table = $this->classConfig['header']['Table'];
         $attrs = Array();
 
-        foreach ($this->classConfig['queryConfig'] as $name => $config){
+        foreach ($this->classConfig as $name => $config){
+
             if($name == 'header') continue;
+            if(!isset($config['Column'])) continue;
 
-            $name           = $config['name'];
-            $type           = $config['type'];
-            $autoIncrement  = isset($config['autoIncrement']) ? " AUTO_INCREMENT " : "";
-            $primaryKey     = isset($config['primaryKey']) ? " PRIMARY KEY " : "";
-            $notnull        = (isset($config['notnull']) and $config['notnull'] == true) ? "NOT NULL" : "";
-            $default        = isset($config['default']) ? " DEFAULT {$config['default']} " : "";
-            $comment        = isset($config['comment']) ? " COMMENT({$config['comment']}) " : "";
+            $name           = $config['Column'];
+            $type           = isset($config['Type']) ? $config['Type'] : 'VARCHAR';
+            $type           = isset($config['Length']) ? "$type(".(int)$config['Length'].")" : "$type(255)";
+            $autoIncrement  = isset($config['Increment']) ? "AUTO_INCREMENT" : "";
+            $primaryKey     = isset($config['PrimaryKey']) ? "PRIMARY KEY" : "";
+            $notnull        = (isset($config['NotNull']) and $config['NotNull'] == true) ? "NOT NULL" : "";
+            $default        = isset($config['Default']) ? "DEFAULT {$config['Default']}" : "";
+            $comment        = isset($config['Comment']) ? "COMMENT '{$config['Comment']}'" : "";
 
-            $attrs[] = ("$name $type $notnull $autoIncrement $primaryKey $default $comment\n");
+            $attrs[] = ("$name $type $notnull $autoIncrement $primaryKey $default $comment");
         }
 
 
         $query = "CREATE TABLE IF NOT EXISTS {$table} (". implode($attrs, ' , ') .")";
-        $this->request()->query($query);
+        $this->request()->exec($query);
         $this->query = $query;
     }
 

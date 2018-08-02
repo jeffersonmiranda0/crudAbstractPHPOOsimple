@@ -4,11 +4,11 @@ require_once __DIR__. '/AbstractModel.class.php';
 
 
 /**
- * @queryConfig {"schema":"Auth"}
- * @queryConfig {"table":"Carro3"}
- * @queryConfig {"namePk":"codigo"}
- * @classConfig {"ignore":"abc"}
- * @classConfig {"generateTable":true}
+ * @Schema (Auth)
+ * @Table (Carro5)
+ * @NamePk (codigo)
+ * @Ignore (abc)
+ * @GenerateTable (true)
  */
 class Carro extends AbstractModel{
 
@@ -19,39 +19,47 @@ class Carro extends AbstractModel{
     protected $ignore       = Array();
 
     /**
-     * @queryConfig {"name":"codigo"}
-     * @queryConfig {"type":"int"}
-     * @queryConfig {"notnull":true}
-     * @queryConfig {"autoIncrement":"true"}
-     * @queryConfig {"primaryKey":"true"}
+     * @var $codigo
+     * @Column (codigo)
+     * @Type (INT)
+     * @NotNull (true)
+     * @Increment (true)
+     * @PrimaryKey (true)
+     * @Default (NULL)
+     * @Comment (Primary Key)
      */
     protected $codigo;
 
     /**
-     * @queryConfig {"name":"nome"}
-     * @queryConfig {"type":"varchar(50)"}
-     * @queryConfig {"default":"null"}
+     * @var $nome
+     * @Column (nome)
+     * @Type (VARCHAR)
+     * @Length (50)
+     * @NotNull (true)
      */
     protected $nome;
 
     /**
-     * @queryConfig {"name":"marca"}
-     * @queryConfig {"type":"varchar(50)"}
-     * @queryConfig {"default":"null"}
+     * @var $marca
+     * @Column (marca)
+     * @Type (VARCHAR)
      */
     protected $marca;
 
     /**
-     * @queryConfig {"name":"modelo"}
-     * @queryConfig {"type":"varchar(50)"}
-     * @queryConfig {"default":"null"}
+     * @var $modelo
+     * @Column (modelo)
+     * @Type (VARCHAR)
+     * @Length (50)
+     * @NotNull (true)
      */
     protected $modelo;
 
     /**
-     * @queryConfig {"name":"ano"}
-     * @queryConfig {"type":"smallint(4)"}
-     * @queryConfig {"default":"null"}
+     * @var $ano
+     * @Column (ano)
+     * @Type (SMALLINT)
+     * @Length (4)
      */
     protected $ano;
 
