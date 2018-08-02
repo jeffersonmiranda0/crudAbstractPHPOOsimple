@@ -2,6 +2,14 @@
 
 require_once __DIR__. '/AbstractModel.class.php';
 
+
+/**
+ * @queryConfig {"schema":"Auth"}
+ * @queryConfig {"table":"Carro3"}
+ * @queryConfig {"namePk":"codigo"}
+ * @classConfig {"ignore":"abc"}
+ * @classConfig {"generateTable":true}
+ */
 class Carro extends AbstractModel{
 
     protected $table        = 'Carro';
@@ -10,56 +18,121 @@ class Carro extends AbstractModel{
 
     protected $ignore       = Array();
 
-    protected static $config       = Array(
-        "createTable" => true
-    );
-    
+    /**
+     * @queryConfig {"name":"codigo"}
+     * @queryConfig {"type":"int"}
+     * @queryConfig {"notnull":true}
+     * @queryConfig {"autoIncrement":"true"}
+     * @queryConfig {"primaryKey":"true"}
+     */
     protected $codigo;
+
+    /**
+     * @queryConfig {"name":"nome"}
+     * @queryConfig {"type":"varchar(50)"}
+     * @queryConfig {"default":"null"}
+     */
     protected $nome;
+
+    /**
+     * @queryConfig {"name":"marca"}
+     * @queryConfig {"type":"varchar(50)"}
+     * @queryConfig {"default":"null"}
+     */
     protected $marca;
+
+    /**
+     * @queryConfig {"name":"modelo"}
+     * @queryConfig {"type":"varchar(50)"}
+     * @queryConfig {"default":"null"}
+     */
     protected $modelo;
+
+    /**
+     * @queryConfig {"name":"ano"}
+     * @queryConfig {"type":"smallint(4)"}
+     * @queryConfig {"default":"null"}
+     */
     protected $ano;
 
+
+    /**
+     * @return int
+     */
     public function getCodigo()
     {
         return $this->codigo;
     }
 
+    /**
+     * @param int $codigo
+     */
     public function setCodigo($codigo)
     {
         $this->codigo = $codigo;
     }
 
-    public function getNome() {
+    /**
+     * @return string
+     */
+    public function getNome()
+    {
         return $this->nome;
     }
 
-    public function getMarca() {
-        return $this->marca;
-    }
-
-    public function getModelo() {
-        return $this->modelo;
-    }
-
-    public function getAno() {
-        return (int)$this->ano;
-    }
-
-    public function setNome($nome) {
+    /**
+     * @param string $nome
+     */
+    public function setNome($nome)
+    {
         $this->nome = $nome;
     }
 
-    public function setMarca($marca) {
+    /**
+     * @return string
+     */
+    public function getMarca()
+    {
+        return $this->marca;
+    }
+
+    /**
+     * @param string $marca
+     */
+    public function setMarca($marca)
+    {
         $this->marca = $marca;
     }
 
-    public function setModelo($modelo) {
+    /**
+     * @return string
+     */
+    public function getModelo()
+    {
+        return $this->modelo;
+    }
+
+    /**
+     * @param string $modelo
+     */
+    public function setModelo($modelo)
+    {
         $this->modelo = $modelo;
     }
 
-    public function setAno($ano) {
-        $this->ano = (int)$ano;
+    /**
+     * @return int
+     */
+    public function getAno()
+    {
+        return $this->ano;
     }
-    
+
+    /**
+     * @param int $ano
+     */
+    public function setAno($ano)
+    {
+        $this->ano = $ano;
+    }
 }
